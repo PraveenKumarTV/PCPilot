@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#101a1c" />
+    <title>PCPilot | Local computer intelligence</title>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="sidebar">
+        <div class="brand"><span class="brand-mark">PC</span><span>PCPilot</span></div>
+        <p class="sidebar-caption">LOCAL COMPUTER INTELLIGENCE</p>
+        <nav class="nav-list" aria-label="Primary navigation">
+          <button class="nav-item active" data-view="overview"><span class="nav-icon">+</span>Overview</button>
+          <button class="nav-item" data-view="chat"><span class="nav-icon">~</span>AI command desk</button>
+          <button class="nav-item" data-view="storage"><span class="nav-icon">=</span>Storage</button>
+          <button class="nav-item" data-view="processes"><span class="nav-icon">:</span>Processes</button>
+        </nav>
+        <div class="sidebar-footer"><span class="status-dot"></span><span>Local connection</span><small>127.0.0.1 only</small></div>
+      </aside>
+
+      <main class="main-content">
+        <header class="topbar">
+          <div><p class="eyebrow">CONTROL ROOM / <span id="current-view">OVERVIEW</span></p><h1 id="page-title">Your machine, clearly.</h1></div>
+          <div class="topbar-actions"><span class="last-updated" id="last-updated">Waiting for telemetry</span><button class="refresh-button" id="refresh-button" type="button">Refresh</button></div>
+        </header>
+
+        <section class="view active" id="view-overview">
+          <div class="hero-strip"><div><p class="eyebrow">SYSTEM PULSE</p><h2 id="hero-host">Connecting to your Linux host...</h2><p id="hero-subtitle">Reading live telemetry from your local machine.</p></div><div class="uptime-block"><span>UPTIME</span><strong id="uptime-value">--</strong></div></div>
+          <div class="metric-grid">
+            <article class="metric-card accent-coral"><div class="metric-heading"><span>CPU load</span><span class="metric-kicker">PROCESSOR</span></div><strong id="cpu-value">--</strong><div class="progress-track"><span id="cpu-bar"></span></div><p id="cpu-detail">Loading processor data</p></article>
+            <article class="metric-card accent-mint"><div class="metric-heading"><span>Memory used</span><span class="metric-kicker">RAM</span></div><strong id="ram-value">--</strong><div class="progress-track"><span id="ram-bar"></span></div><p id="ram-detail">Loading memory data</p></article>
+            <article class="metric-card accent-gold"><div class="metric-heading"><span>Primary disk</span><span class="metric-kicker">STORAGE</span></div><strong id="disk-value">--</strong><div class="progress-track"><span id="disk-bar"></span></div><p id="disk-detail">Loading disk data</p></article>
+          </div>
+          <div class="content-grid"><article class="panel system-panel"><div class="panel-heading"><div><p class="eyebrow">HOST PROFILE</p><h3>System identity</h3></div><span class="live-label">LIVE</span></div><dl class="detail-list" id="system-details"><div><dt>Operating system</dt><dd>--</dd></div><div><dt>Architecture</dt><dd>--</dd></div><div><dt>Kernel</dt><dd>--</dd></div><div><dt>Logged-in user</dt><dd>--</dd></div></dl></article><article class="panel prompt-panel"><p class="eyebrow">TRY THE ASSISTANT</p><h3>Ask a real question about this machine.</h3><p>PCPilot will inspect local telemetry through registered MCP tools and show its work.</p><button class="primary-button" data-view="chat" type="button">Open command desk <span>-></span></button></article></div>
+        </section>
+
+        <section class="view" id="view-chat"><div class="section-heading"><div><p class="eyebrow">NATURAL LANGUAGE CONTROL</p><h2>AI command desk</h2></div><span class="tool-badge">MCP / READ ONLY</span></div><div class="chat-layout"><div class="chat-panel"><div class="messages" id="messages"><div class="message assistant"><span class="message-label">PCPILOT</span><p>Ask me about your CPU, memory, disks, files, or running processes.</p></div></div><form class="chat-form" id="chat-form"><input id="chat-input" autocomplete="off" placeholder="e.g. Which processes use the most memory?" /><button class="primary-button" type="submit">Send <span>-></span></button></form></div><aside class="panel activity-panel"><p class="eyebrow">TOOL ACTIVITY</p><h3>What I checked</h3><div id="tool-activity" class="activity-empty">No operations yet.</div></aside></div></section>
+
+        <section class="view" id="view-storage"><div class="section-heading"><div><p class="eyebrow">FILE INTELLIGENCE</p><h2>Storage lens</h2></div><span class="tool-badge">SAFE SCANS</span></div><div class="toolbar"><input id="storage-path" value="." aria-label="Storage path" /><button class="secondary-button" id="largest-button" type="button">Find largest files</button><button class="secondary-button" id="duplicates-button" type="button">Find duplicates</button></div><div class="panel table-panel"><div class="panel-heading"><div><p class="eyebrow">LARGEST FILES</p><h3 id="storage-status">Choose a scan to begin</h3></div></div><div class="table-scroll"><table><thead><tr><th>Path</th><th>Size</th><th>Modified</th></tr></thead><tbody id="storage-results"><tr><td colspan="3" class="empty-cell">No scan results yet.</td></tr></tbody></table></div></div></section>
+
+        <section class="view" id="view-processes"><div class="section-heading"><div><p class="eyebrow">RUNTIME OBSERVATORY</p><h2>Processes</h2></div><span class="tool-badge">READ ONLY</span></div><div class="toolbar"><button class="secondary-button process-tab active" data-process-mode="memory" type="button">Top memory</button><button class="secondary-button process-tab" data-process-mode="cpu" type="button">Top CPU</button></div><div class="panel table-panel"><div class="panel-heading"><div><p class="eyebrow">LIVE SNAPSHOT</p><h3 id="process-status">Loading process data</h3></div></div><div class="table-scroll"><table><thead><tr><th>Process</th><th>PID</th><th>CPU</th><th>Memory</th><th>State</th></tr></thead><tbody id="process-results"><tr><td colspan="5" class="empty-cell">No process data yet.</td></tr></tbody></table></div></div></section>
+      </main>
+    </div>
+    <div class="toast" id="toast" role="status"></div>
+    <script src="/app.js"></script>
+  </body>
+</html>

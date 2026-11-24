@@ -1,0 +1,30 @@
+{
+  "name": "pcpilot",
+  "version": "0.3.0",
+  "description": "Local-first AI-powered Linux computer management assistant",
+  "main": "backend/server.js",
+  "type": "commonjs",
+  "engines": {
+    "node": "22.x"
+  },
+  "scripts": {
+    "start": "node backend/server.js",
+    "mcp": "node backend/mcp/server.js",
+    "test": "node --test test"
+  },
+  "keywords": [
+    "mcp",
+    "linux",
+    "groq",
+    "system-monitoring"
+  ],
+  "license": "MIT",
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.32.2",
+    "dotenv": "^18.0.10",
+    "express": "^5.3.0",
+    "groq-sdk": "^1.6.0",
+    "systeminformation": "^5.33.24",
+    "zod": "^4.6.7"
+  }
+}
