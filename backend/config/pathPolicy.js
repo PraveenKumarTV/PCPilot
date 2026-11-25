@@ -1,6 +1,7 @@
 'use strict';
 
-require('dotenv').config();
+const envFile = process.env.PCPILOT_ENV_FILE;
+require('dotenv').config(envFile ? { path: envFile } : undefined);
 
 const fs = require('node:fs/promises');
 const os = require('node:os');

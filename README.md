@@ -130,3 +130,48 @@ Phase 6 adds cleanup scans and explicit deletion confirmation:
 
 Every deletion path is resolved and validated again at execution time. Paths outside `PCPILOT_ALLOWED_DIRS`, symlink escapes, directories, expired tokens, and reused tokens are rejected. Set `PCPILOT_CLEANUP_DIRS` to configure directories scanned by `scan_cleanup_candidates`.
 
+## Ubuntu desktop application
+
+PCPilot also runs as a native Electron desktop window. The Electron main process starts the existing Express backend on an OS-assigned loopback port, waits for its health endpoint, then loads the existing frontend from that backend. Closing the desktop app closes its HTTP server and MCP stdio connection. The app does not search for or terminate another process on a fixed port.
+
+### Development
+
+Use Node.js 22, install dependencies, and run Electron with the existing backend and frontend:
+
+```bash
+npm install
+npm run dev
+```
+
+The original backend-only workflow remains available with `npm start`; the MCP stdio server can still be started with `npm run mcp`. Run `npm test` for the project tests.
+
+### Groq configuration
+
+Development continues to use the project-root `.env` file. In an installed build, PCPilot reads configuration from the current user's Electron configuration directory, normally `~/.config/PCPilot/.env`. Create that file yourself and set `GROQ_API_KEY` there; do not put credentials in the frontend or package. For example, create the directory with owner-only permissions, edit the `.env` file, then set the file permissions to `600`. The `.env` file is excluded from the Debian package. If no key is configured, local system and file features remain available and chat reports its existing configuration error.
+
+### Build and install the Debian package
+
+Build on Ubuntu or another compatible Linux system:
+
+```bash
+npm run build:linux
+```
+
+The current package is written to `release/PCPilot-0.3.0.deb`. Install it with:
+
+```bash
+sudo apt install ./release/PCPilot-0.3.0.deb
+```
+
+After installation, launch **PCPilot** from the Ubuntu Applications menu.
+
+To use the AI command desk, Configure Groq for an installed build by creating ~/.config/PCPilot/.env with GROQ_API_KEY, then restrict access to the config directory/file.
+
+To uninstall it through apt:
+
+```bash
+sudo apt remove pcpilot
+```
+
+The Debian package includes the Electron runtime and production dependencies, but excludes `.env` files, tests, Git metadata, and development-only files. Its app directory is intentionally unpacked so the existing MCP stdio server can be launched as an application-owned child without changing its architecture.
+

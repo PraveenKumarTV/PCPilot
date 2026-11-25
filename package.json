@@ -1,14 +1,19 @@
 {
   "name": "pcpilot",
   "version": "0.3.0",
+  "productName": "PCPilot",
   "description": "Local-first AI-powered Linux computer management assistant",
-  "main": "backend/server.js",
+  "author": "PCPilot maintainers",
+  "desktopName": "pcpilot",
+  "main": "electron/main.js",
   "type": "commonjs",
   "engines": {
     "node": "22.x"
   },
   "scripts": {
     "start": "node backend/server.js",
+    "dev": "electron .",
+    "build:linux": "electron-builder --linux deb",
     "mcp": "node backend/mcp/server.js",
     "test": "node --test test"
   },
@@ -19,6 +24,41 @@
     "system-monitoring"
   ],
   "license": "MIT",
+  "build": {
+    "appId": "com.pcpilot.desktop",
+    "productName": "PCPilot",
+    "electronDist": "node_modules/electron/dist",
+    "asar": false,
+    "directories": {
+      "output": "release"
+    },
+    "files": [
+      "electron/**",
+      "backend/**",
+      "frontend/**",
+      "build/icon.svg",
+      "package.json",
+      "!**/.env",
+      "!**/.env.*",
+      "!**/README.md",
+      "!test/**",
+      "!README.md",
+      "!Overview.png",
+      "!AIchat.png"
+    ],
+    "linux": {
+      "target": [
+        "deb"
+      ],
+      "category": "Utility",
+      "icon": "build/icon.svg",
+      "synopsis": "Local AI-powered computer management assistant",
+      "description": "PCPilot provides local system monitoring and controlled MCP-powered computer management.",
+      "artifactName": "PCPilot-${version}.${ext}",
+      "maintainer": "PCPilot maintainers",
+      "syncDesktopName": true
+    }
+  },
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.32.2",
     "dotenv": "^18.0.10",
@@ -26,5 +66,9 @@
     "groq-sdk": "^1.6.0",
     "systeminformation": "^5.33.24",
     "zod": "^4.6.7"
+  },
+  "devDependencies": {
+    "electron": "^45.5.0",
+    "electron-builder": "^26.18.0"
   }
 }

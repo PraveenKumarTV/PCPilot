@@ -17,10 +17,13 @@ class PcpilotMcpClient {
     }
 
     this.transport = new StdioClientTransport({
-      command: process.execPath,
+      command: process.env.PCPILOT_NODE_EXECUTABLE || process.execPath,
       args: [path.join(this.projectRoot, 'backend', 'mcp', 'server.js')],
       cwd: this.projectRoot,
-      env: process.env,
+      env: {
+        ...process.env,
+        ...(process.versions.electron ? { ELECTRON_RUN_AS_NODE: '1' } : {}),
+      },
       stderr: 'inherit',
     });
 
