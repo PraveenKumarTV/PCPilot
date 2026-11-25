@@ -215,6 +215,12 @@ $('#refresh-button').addEventListener('click', loadMetrics);
 $('#chat-form').addEventListener('submit', sendChat);
 $('#largest-button').addEventListener('click', () => loadStorage('largest'));
 $('#duplicates-button').addEventListener('click', () => loadStorage('duplicates'));
+$('#storage-path').addEventListener('keydown', (event) => {
+  if (event.key === 'Enter') {
+    event.preventDefault();
+    loadStorage('largest');
+  }
+});
 $$('.process-tab').forEach((button) => button.addEventListener('click', () => { $$('.process-tab').forEach((item) => item.classList.remove('active')); button.classList.add('active'); state.currentProcessMode = button.dataset.processMode; loadProcesses(); }));
 
 loadMetrics();

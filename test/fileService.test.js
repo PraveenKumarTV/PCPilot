@@ -6,6 +6,7 @@ const fs = require('node:fs/promises');
 const os = require('node:os');
 const path = require('node:path');
 const fileService = require('../backend/services/fileService');
+const { resolveInputPath } = require('../backend/config/pathPolicy');
 
 let testRoot;
 
@@ -56,4 +57,10 @@ test('duplicate and metadata scans return real file data', async () => {
 test('file services reject paths outside the allowed home directory', async () => {
   await assert.rejects(() => fileService.getFolderSize('/etc'), /outside configured allowed directories/);
   await assert.rejects(() => fileService.getFileMetadata('/etc/passwd'), /outside configured allowed directories/);
+});
+
+test('relative and tilde paths resolve from the user home directory', () => {
+  assert.equal(resolveInputPath('Documents'), path.join(os.homedir(), 'Documents'));
+  assert.equal(resolveInputPath('~/Downloads'), path.join(os.homedir(), 'Downloads'));
+  assert.equal(resolveInputPath('~'), os.homedir());
 });

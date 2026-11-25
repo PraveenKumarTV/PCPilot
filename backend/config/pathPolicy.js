@@ -17,6 +17,17 @@ function isInsideRoot(candidate, root) {
   return relative === '' || (!relative.startsWith('..') && !path.isAbsolute(relative));
 }
 
+function resolveInputPath(inputPath) {
+  const trimmedPath = inputPath.trim();
+  if (trimmedPath === '~') return os.homedir();
+  if (trimmedPath.startsWith(`~${path.sep}`)) {
+    return path.resolve(os.homedir(), trimmedPath.slice(2));
+  }
+  return path.isAbsolute(trimmedPath)
+    ? path.resolve(trimmedPath)
+    : path.resolve(os.homedir(), trimmedPath);
+}
+
 async function getAllowedRoots() {
   const roots = [];
   for (const root of configuredRoots) {
@@ -37,7 +48,7 @@ async function resolveAllowedPath(inputPath, options = {}) {
     throw new Error('A non-empty path is required');
   }
 
-  const requestedPath = path.resolve(inputPath);
+  const requestedPath = resolveInputPath(inputPath);
   const [realPath, allowedRoots] = await Promise.all([
     fs.realpath(requestedPath),
     getAllowedRoots(),
@@ -60,4 +71,4 @@ async function resolveAllowedPath(inputPath, options = {}) {
   return realPath;
 }
 
-module.exports = { configuredRoots, getAllowedRoots, isInsideRoot, resolveAllowedPath };
+module.exports = { configuredRoots, getAllowedRoots, isInsideRoot, resolveInputPath, resolveAllowedPath };
